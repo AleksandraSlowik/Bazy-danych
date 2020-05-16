@@ -1,0 +1,39 @@
+1) Warstwa trees -> styl -> unikalny -> dla VEGDESC (zmienna unikalna) -> różne kolory dla typów drzew
+SELECT SUM(trees.AREA_KM2) AS Area_mixed FROM trees WHERE VEGDESC='Mixed Trees';
+
+2) Wektor -> narzędzie zarządzania danymi -> podziel warstwę wektorową -> pole unikalne id- VEGDESC -> zapisz w katalogu
+
+3)  Użyto processing -> panel algorytmów -> Baza danych -> Wykonaj zapytanie SQL 
+SELECT SUM(ST_Length(railroads.geometry)) FROM regions, railroads WHERE regions.NAME_2='Matanuska-Susitna';
+
+4) SELECT AVG(airports.ELEV) FROM airports WHERE airports.USE='Military';
+--średnia wysokość 593,25
+
+SELECT COUNT(*) FROM airports WHERE USE='Military';
+--8 lotnisk
+
+SELECT COUNT(*)  FROM airports WHERE USE='Military' AND ELEV>1400;
+--1 lotnisko
+
+DELETE FROM airports WHERE USE='Military' AND ELEV>1400;
+
+5)  Warstwa - budynki z Bristol Bay
+SELECT * FROM popp, regions WHERE regions.NAME_2='Bristol Bay' AND popp.F_CODEDESC='Building' AND Contains(regions.geometry, popp.geometry);
+--liczba budynków 5
+SELECT COUNT(*) AS numberof_buildings FROM popp, regions WHERE regions.NAME_2='Bristol Bay' AND popp.F_CODEDESC='Building' AND Contains(regions.geometry, popp.geometry);
+
+SELECT COUNT(*) AS numberof_buildings2 FROM popp, regions, rivers WHERE popp.F_CODEDESC='Building' AND regions.NAME_2='Bristol Bay' 
+AND ST_Contains(ST_Buffer(rivers.geometry,100000), popp.geometry) AND ST_Contains(regions.geometry, popp.geometry);
+
+6) Wektor -> narzędzia analizy -> przecięcia linii/ zapytanie SQL
+SELECT COUNT(*) AS 'Liczba przecięć' FROM zadprzeciecia;
+--5 przecięć
+
+7) Wektor -> narzędzia analizy -> wydobądź wierzchołki
+
+8) SELECT  NAME_2 FROM regions , airports , railroads  WHERE ST_Distance(airports.geometry, regions.geometry) < 100000 
+AND ST_Distance(railroads.geometry, regions.geometry) >= 50000  LIMIT 1;
+
+9) Wektor->Narzędzia geometrii->Uprość geometrię-> Tolerancja 100
+SELECT SUM(AREAKM2) from swamp;
+pole się nie zmieniło, wynosi 24719,761
